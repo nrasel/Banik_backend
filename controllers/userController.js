@@ -68,3 +68,5 @@ module.exports.deleteAUser = expressAsyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+// updated a user
