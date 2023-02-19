@@ -32,3 +32,13 @@ module.exports.loginController = expressAsyncHandler(async (req, res) => {
     throw new Error("Invalid Credentials");
   }
 });
+
+// get all user
+module.exports.getAllUser = expressAsyncHandler(async (req, res) => {
+  try {
+    const getUsers = await userModel.find({});
+    res.json(getUsers);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
