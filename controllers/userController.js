@@ -73,10 +73,11 @@ module.exports.deleteAUser = expressAsyncHandler(async (req, res) => {
 
 // updated a user
 module.exports.updatedAUser = expressAsyncHandler(async (req, res) => {
-  const { id } = req.params;
+  const { _id } = req.user;
+  console.log(_id);
   try {
     const updatedUser = await userModel.findByIdAndUpdate(
-      id,
+      _id,
       {
         firstname: req.body?.firstname,
         lastname: req?.body?.lastname,
