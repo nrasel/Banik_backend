@@ -95,3 +95,24 @@ module.exports.updatedAUser = expressAsyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+// user block
+module.exports.blockUser = expressAsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const block = await userModel.findByIdAndUpdate(
+      id,
+      {
+        isBlocked: true,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json({
+      message: "User Blocked",
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
