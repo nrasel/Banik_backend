@@ -48,6 +48,9 @@ var userSchema = new mongoose.Schema(
         ref: "Product",
       },
     ],
+    refressToken: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
