@@ -1,6 +1,7 @@
 const expressAsyncHandler = require("express-async-handler");
 const userModel = require("../models/userModel");
 const { generateToken } = require("../config/jwtToken");
+const validatedMongoDbId = require("../utils/validatedMongoDbId");
 
 module.exports.createUser = expressAsyncHandler(async (req, res) => {
   const email = req.body.email;
@@ -48,6 +49,7 @@ module.exports.getAllUser = expressAsyncHandler(async (req, res) => {
 // get a single user
 module.exports.getAUser = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
+  validatedMongoDbId(id);
   try {
     const getaUser = await userModel.findById(id);
     res.json({
@@ -61,6 +63,7 @@ module.exports.getAUser = expressAsyncHandler(async (req, res) => {
 // delete a user
 module.exports.deleteAUser = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
+  validatedMongoDbId(id);
   try {
     const deleteUser = await userModel.findByIdAndDelete(id);
     res.json({
@@ -74,7 +77,7 @@ module.exports.deleteAUser = expressAsyncHandler(async (req, res) => {
 // updated a user
 module.exports.updatedAUser = expressAsyncHandler(async (req, res) => {
   const { _id } = req.user;
-  console.log(_id);
+  validatedMongoDbId(_id);
   try {
     const updatedUser = await userModel.findByIdAndUpdate(
       _id,
@@ -99,6 +102,7 @@ module.exports.updatedAUser = expressAsyncHandler(async (req, res) => {
 // user block
 module.exports.blockUser = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
+  validatedMongoDbId(id);
   try {
     const block = await userModel.findByIdAndUpdate(
       id,
@@ -119,6 +123,7 @@ module.exports.blockUser = expressAsyncHandler(async (req, res) => {
 
 module.exports.unblockUser = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
+  validatedMongoDbId(id);
   try {
     const unblock = await userModel.findByIdAndUpdate(
       id,
