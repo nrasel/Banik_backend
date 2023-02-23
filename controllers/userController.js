@@ -26,9 +26,9 @@ module.exports.loginController = expressAsyncHandler(async (req, res) => {
   const findUser = await userModel.findOne({ email });
 
   if (findUser && (await findUser.isPasswordMatched(password))) {
-    const refreshToken = await generateRefreshToken(findUser._id);
+    const refreshToken = await generateRefreshToken(findUser?._id);
     const updateUser = await userModel.findByIdAndUpdate(
-      findUser._id,
+      findUser?._id,
       {
         refreshToken: refreshToken,
       },
@@ -95,7 +95,7 @@ module.exports.deleteAUser = expressAsyncHandler(async (req, res) => {
 module.exports.handleRefreshToken = expressAsyncHandler(async (req, res) => {
   const cookie = req.cookies;
   // console.log(cookie);
-  if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookes");
+  if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
   const refreshToken = cookie.refreshToken;
   const user = await userModel.findOne({ refreshToken });
   if (!user) throw new Error("No Refresh token present in db");
@@ -109,6 +109,29 @@ module.exports.handleRefreshToken = expressAsyncHandler(async (req, res) => {
       });
     }
   });
+});
+
+// user logout
+module.exports.logOut = expressAsyncHandler(async (req, res) => {
+  const cookie = req.cookies;
+  if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
+  const refressToken = cookie.refreshToken;
+  const user = await userModel.findOne({ refressToken });
+  if (!user) {
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+    });
+    return res.sendStatus(204); //forbodden
+  }
+  await userModel.findOneAndUpdate(refreshToken, {
+    refreshToken: "",
+  });
+  res.clearCookie(refressToken, {
+    httpOnly: true,
+    secure: true,
+  });
+  res.sendStatus(204); //forbodden
 });
 
 // updated a user

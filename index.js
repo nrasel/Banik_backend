@@ -13,9 +13,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // for using refress token
 app.use(cookieParser());
+app.use("/api/user", authRouter);
 
 app.use(notFound);
 app.use(errorHandler);
-app.use("/api/user", authRouter);
-
 app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
