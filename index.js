@@ -3,6 +3,7 @@ const express = require("express");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const app = express();
 const authRouter = require("./routes/authRoutes");
+const productRouter = require("./routes/productRoutes");
 const dbConnect = require("./config/dbConnect");
 const PORT = process.env.PORT || 8080;
 const cookieParser = require("cookie-parser");
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // for using refress token
 app.use(cookieParser());
 app.use("/api/user", authRouter);
+app.use("/api/product", productRouter);
 
 app.use(notFound);
 app.use(errorHandler);
