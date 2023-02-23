@@ -21,3 +21,13 @@ module.exports.getaProduct = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+// get all products
+module.exports.getallProducts = asyncHandler(async (req, res) => {
+  try {
+    const getAllProducts = await productModels.find({});
+    res.json(getAllProducts);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
