@@ -1,9 +1,14 @@
 const asyncHandler = require("express-async-handler");
 const productModels = require("../models/productModels");
+// it changes to text lowercase
+const slugify = require("slugify");
 
 // create product
 module.exports.createProduct = asyncHandler(async (req, res) => {
   try {
+    if (req.body.title) {
+      req.body.slug = slugify(req.body.title);
+    }
     const newProduct = await productModels.create(req.body);
     res.json(newProduct);
   } catch (error) {
