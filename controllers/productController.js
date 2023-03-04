@@ -16,6 +16,23 @@ module.exports.createProduct = asyncHandler(async (req, res) => {
   }
 });
 
+//update product
+module.exports.updateProduct = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (req.body.title) {
+      req.body.slug = slugify(req.body.title);
+    }
+    const updateProduct = await productModels.findOneAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.json(updateProduct);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 // get a product
 module.exports.getaProduct = asyncHandler(async (req, res) => {
   try {
