@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const productModels = require("../models/productModels");
-// it changes to text lowercase
 const slugify = require("slugify");
 
 // create product
@@ -28,6 +27,17 @@ module.exports.updateProduct = asyncHandler(async (req, res) => {
       new: true,
     });
     res.json(updateProduct);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+// delete product
+module.exports.deleteProduct = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleteProduct = await productModels.findOneAndDelete(id);
+    res.json(deleteProduct);
   } catch (error) {
     throw new Error(error);
   }
