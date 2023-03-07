@@ -56,14 +56,17 @@ module.exports.getaProduct = asyncHandler(async (req, res) => {
 
 // get all products
 module.exports.getallProducts = asyncHandler(async (req, res) => {
-  const queryObj = req.query;
-  console.log(queryObj);
   try {
-    // searching product using category
-    const getAllProducts = await productModels
-      .where("category")
-      .equals(req.query.category);
-    res.json(getAllProducts);
+    // filter product using price
+    const queryObj = { ...req.query };
+    const excludFields = ["page", "sort", "limit", "fields"];
+    excludFields.forEach((el) => delete queryObj[el]);
+    let queryStr = JSON.stringify(queryObj);
+    // get=greate than || lte means less then
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    const query = productModels.find(JSON.parse(queryStr));
+    const product = await query;
+    res.json(product);
   } catch (error) {
     throw new Error(error);
   }
