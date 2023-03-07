@@ -64,7 +64,16 @@ module.exports.getallProducts = asyncHandler(async (req, res) => {
     let queryStr = JSON.stringify(queryObj);
     // get=greate than || lte means less then
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    const query = productModels.find(JSON.parse(queryStr));
+    let query = productModels.find(JSON.parse(queryStr));
+
+    // sorting
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort("-createdAt");
+    }
+
     const product = await query;
     res.json(product);
   } catch (error) {
