@@ -56,8 +56,13 @@ module.exports.getaProduct = asyncHandler(async (req, res) => {
 
 // get all products
 module.exports.getallProducts = asyncHandler(async (req, res) => {
+  const queryObj = req.query;
+  console.log(queryObj);
   try {
-    const getAllProducts = await productModels.find({});
+    // searching product using category
+    const getAllProducts = await productModels
+      .where("category")
+      .equals(req.query.category);
     res.json(getAllProducts);
   } catch (error) {
     throw new Error(error);
