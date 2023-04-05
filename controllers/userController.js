@@ -205,12 +205,12 @@ module.exports.unblockUser = expressAsyncHandler(async (req, res) => {
 // update password
 module.exports.updatePassword = expressAsyncHandler(async (req, res) => {
   const { _id } = req.user;
-  const password = req.body;
+  const { password } = req.body;
 
   validatedMongoDbId(_id);
   const user = await userModel.findById(_id);
   // console.log(user);
-  if (typeof password) {
+  if (password) {
     user.password = password;
     // console.log(user.password);
     const updatedPassword = await user.save();
